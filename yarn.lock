@@ -3188,7 +3188,7 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
-nexusmed-js@0.0.3:
+nexusmed-js@^0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/nexusmed-js/-/nexusmed-js-0.0.3.tgz#1972bb7b1e668372318fc1ef12fa0ba3be9b782c"
   integrity sha512-6ZW8wtu38V56x9iWmYIJ27zhKOnHN7YoFwSeAuo4ZlwdWxo76BWsDGPpFBbkFTRjK01u+pz31IdA7gLmm55Tgw==
@@ -3674,6 +3674,11 @@ rollup-plugin-dts@^4.1.0:
     magic-string "^0.25.7"
   optionalDependencies:
     "@babel/code-frame" "^7.16.0"
+
+rollup-plugin-peer-deps-external@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-peer-deps-external/-/rollup-plugin-peer-deps-external-2.2.4.tgz#8a420bbfd6dccc30aeb68c9bf57011f2f109570d"
+  integrity sha512-AWdukIM1+k5JDdAqV/Cxd+nejvno2FVLVeZ74NKggm3Q5s9cbbcOgUPGdbxPi4BXu7xGaZ8HG12F+thImYu/0g==
 
 rollup-plugin-typescript2@^0.31.1:
   version "0.31.1"
