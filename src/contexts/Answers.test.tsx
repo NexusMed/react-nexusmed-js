@@ -14,11 +14,11 @@ describe('setPrefilled', () => {
       { text: "Test" }
     ]
     const wrapper: React.FC = ({ children }) => <AnswersProvider>{children}</AnswersProvider>
-    const { result } = renderHook(() => useAnswers(prefilled), { wrapper })
+    const { result } = renderHook(() => useAnswers('a', prefilled), { wrapper })
     const expected = new Map<number, consult.AnswerInput>()
     expected.set(0, prefilled[0])
     expected.set(1, prefilled[1])
-    expect(result.current.answers).toStrictEqual(expected)
+    expect(result.current.answers['a']).toStrictEqual(expected)
   })
 
 })
@@ -29,31 +29,31 @@ describe('updateAnswer', () => {
 
   beforeEach(() => {
     wrapper = ({ children }) => <AnswersProvider>{children}</AnswersProvider>
-    ctx = (renderHook(() => useAnswers(), { wrapper })).result
+    ctx = (renderHook(() => useAnswers('b'), { wrapper })).result
   })
 
   test('should create new answer', () => {
     act(() => {
-      ctx.current.setAnswer(0, {
+      ctx.current.setAnswer('b', 0, {
         text: 'test'
       })
     })
     const expected = new Map<number, consult.AnswerInput>()
     expected.set(0, { text: 'test' })
-    expect(ctx.current.answers).toStrictEqual(expected)
+    expect(ctx.current.answers['b']).toStrictEqual(expected)
   })
 
   test('should update existing answer', () => {
     act(() => {
-      ctx.current.setAnswer(0, { choice: [1] })
+      ctx.current.setAnswer('c', 0, { choice: [1] })
     })
     const expected = new Map<number, consult.AnswerInput>()
     expected.set(0, { choice: [1] })
-    expect(ctx.current.answers).toStrictEqual(expected)
+    expect(ctx.current.answers['c']).toStrictEqual(expected)
     act(() => {
-      ctx.current.setAnswer(0, { text: 'test' })
+      ctx.current.setAnswer('c', 0, { text: 'test' })
     })
     expected.set(0, { text: 'test' })
-    expect(ctx.current.answers).toStrictEqual(expected)
+    expect(ctx.current.answers['c']).toStrictEqual(expected)
   })
 })

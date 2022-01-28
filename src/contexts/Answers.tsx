@@ -1,40 +1,46 @@
 import React, { useState, useEffect } from 'react'
 import { consult } from 'nexusmed-js'
 import { AnswerInput } from 'nexusmed-js/dist/dts/consult/sdk'
+import useLocalStorage, { writeStorage } from '@rehooks/local-storage'
 
 export interface IAnswersContext {
-  answers: Map<number, consult.AnswerInput>;
-  setAnswers: (answers: AnswerInput[]) => void;
-  setAnswer: (index: number, answer: AnswerInput) => void;
-  setQuestionnaire: (questionnaire: consult.Questionnaire) => void;
+  answers: Answers;
+  setAnswers: (id: string, answers: AnswerInput[]) => void;
+  setAnswer: (id: string, index: number, answer: AnswerInput) => void;
 }
 
 const initialState: IAnswersContext = {
-  answers: new Map<number, consult.AnswerInput>(),
+  answers: {},
   setAnswers: () => Promise.resolve(),
   setAnswer: () => Promise.resolve(),
-  setQuestionnaire: () => Promise.resolve()
 }
 
 const AnswersContext = React.createContext<IAnswersContext>(initialState)
 
+type Answers = {
+  [key: string]: Map<number, consult.AnswerInput>
+}
 
 export const AnswersProvider: React.FC = ({ children }) => {
-  const [answers, _setAnswers] = useState<Map<number, consult.AnswerInput>>(initialState.answers)
-  const [questionnaire, _setQuestionnaire] = useState<consult.Questionnaire>()
 
-  const setAnswer = (index: number, answer: AnswerInput) => {
-    _setAnswers(answers.set(index, answer))
+  const [answers] = useLocalStorage<Answers>('nexus:qans', initialState.answers)
+
+  const setAnswer = (id: string, index: number, answer: AnswerInput) => {
+    let ans = answers
+    if (!ans[id]) {
+      ans[id] = new Map<number, consult.AnswerInput>()
+    }
+    ans[id].set(index, answer)
+
+    writeStorage('nexus:qans', ans)
   }
 
-  const setAnswers = (prefilled: consult.AnswerInput[]) => {
-    let answers: Map<number, consult.AnswerInput> = new Map<number, consult.AnswerInput>()
-    prefilled.forEach((answer, index) => answers.set(index, answer))
-    _setAnswers(answers)
-  }
-
-  const setQuestionnaire = (questionnaire: consult.Questionnaire) => {
-    _setQuestionnaire(questionnaire)
+  const setAnswers = (id: string, prefilled: consult.AnswerInput[]) => {
+    let ans: Map<number, consult.AnswerInput> = new Map<number, consult.AnswerInput>()
+    prefilled.forEach((answer, index) => ans.set(index, answer))
+    let newAns = answers
+    newAns[id] = ans
+    writeStorage('nexus:qans', newAns)
   }
 
   return (
@@ -42,20 +48,19 @@ export const AnswersProvider: React.FC = ({ children }) => {
       answers,
       setAnswers,
       setAnswer,
-      setQuestionnaire
     }}>
       {children}
     </AnswersContext.Provider>
   )
 }
 
-export const useAnswers = (prefilled?: consult.AnswerInput[]) => {
+export const useAnswers = (id: string, prefilled?: consult.AnswerInput[]) => {
   const context = React.useContext(AnswersContext)
 
   useEffect(() => {
     // context.setQuestionnaire(props.questionnaire)
     if (prefilled) {
-      context.setAnswers(prefilled)
+      context.setAnswers(id, prefilled)
     }
   }, [])
 
