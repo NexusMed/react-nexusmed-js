@@ -1,6 +1,6 @@
 {
   "name": "@nexusmed/react-nexusmed-js",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "React components for the Nexusmed API",
   "repository": {
     "url": "git://github.com/nexusmed/react-nexusmed-js.git"
