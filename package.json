@@ -23,9 +23,7 @@
     "nexusmed"
   ],
   "license": "MIT",
-  "dependencies": {
-    "@rehooks/local-storage": "^2.4.4"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.1.3",

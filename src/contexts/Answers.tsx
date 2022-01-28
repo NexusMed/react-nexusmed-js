@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { consult } from 'nexusmed-js'
 import { AnswerInput } from 'nexusmed-js/dist/dts/consult/sdk'
-import useLocalStorage, { writeStorage } from '@rehooks/local-storage'
 
 export interface IAnswersContext {
   answers: Answers;
@@ -23,7 +22,7 @@ type Answers = {
 
 export const AnswersProvider: React.FC = ({ children }) => {
 
-  const [answers] = useLocalStorage<Answers>('nexus:qans', initialState.answers)
+  const [answers, _setAnswers] = useState<Answers>(initialState.answers)
 
   const setAnswer = (id: string, index: number, answer: AnswerInput) => {
     let ans = answers
@@ -31,7 +30,7 @@ export const AnswersProvider: React.FC = ({ children }) => {
       ans[id] = new Map<number, consult.AnswerInput>()
     }
     ans[id].set(index, answer)
-    writeStorage('nexus:qans', ans)
+    _setAnswers(ans)
   }
 
   const setAnswers = (id: string, prefilled: consult.AnswerInput[]) => {
@@ -39,7 +38,7 @@ export const AnswersProvider: React.FC = ({ children }) => {
     prefilled.forEach((answer, index) => ans.set(index, answer))
     let newAns = answers
     newAns[id] = ans
-    writeStorage('nexus:qans', newAns)
+    _setAnswers(newAns)
   }
 
   return (
@@ -57,11 +56,8 @@ export const useAnswers = (id: string, prefilled?: consult.AnswerInput[]) => {
   const context = React.useContext(AnswersContext)
 
   useEffect(() => {
-    let ans = context.answers
-    if (ans[id]) {
-      ans[id] = new Map<number, consult.AnswerInput>([])
-      writeStorage('nexus:qans', ans)
-    }
+    context.setAnswers(id, [])
+
     if (prefilled) {
       context.setAnswers(id, prefilled)
     }
