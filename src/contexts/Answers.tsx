@@ -59,8 +59,6 @@ export const useAnswers = (id: string, prefilled?: consult.AnswerInput[]) => {
   useEffect(() => {
     if (prefilled) {
       context.setAnswers(id, prefilled)
-    } else if (!context.answers[id]?.values) {
-      context.setAnswers(id, [])
     }
   }, [])
 
