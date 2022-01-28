@@ -56,4 +56,9 @@ describe('updateAnswer', () => {
     expected.set(0, { text: 'test' })
     expect(ctx.current.answers['c']).toStrictEqual(expected)
   })
+
+  test('should have safe defaults', () => {
+    let ans = ctx.current.answers['b']
+    ans.values()
+  })
 })

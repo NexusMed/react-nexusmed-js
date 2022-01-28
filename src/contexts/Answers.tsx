@@ -31,7 +31,6 @@ export const AnswersProvider: React.FC = ({ children }) => {
       ans[id] = new Map<number, consult.AnswerInput>()
     }
     ans[id].set(index, answer)
-
     writeStorage('nexus:qans', ans)
   }
 
@@ -58,7 +57,11 @@ export const useAnswers = (id: string, prefilled?: consult.AnswerInput[]) => {
   const context = React.useContext(AnswersContext)
 
   useEffect(() => {
-    // context.setQuestionnaire(props.questionnaire)
+    let ans = context.answers
+    if (ans[id]) {
+      ans[id] = new Map<number, consult.AnswerInput>([])
+      writeStorage('nexus:qans', ans)
+    }
     if (prefilled) {
       context.setAnswers(id, prefilled)
     }
