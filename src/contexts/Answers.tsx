@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { consult } from 'nexusmed-js'
 import { AnswerInput } from 'nexusmed-js/dist/dts/consult/sdk'
-import useLocalStorageState from 'use-local-storage-state'
 
 export interface IAnswersContext {
   answers: Answers;
@@ -23,7 +22,7 @@ type Answers = {
 
 export const AnswersProvider: React.FC = ({ children }) => {
 
-  const [answers, _setAnswers] = useLocalStorageState<Answers>('nexus:qans', initialState.answers)
+  const [answers, _setAnswers] = useState<Answers>(initialState.answers)
 
   const setAnswer = (id: string, index: number, answer: AnswerInput) => {
     let ans = answers
