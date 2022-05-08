@@ -1,10 +1,22 @@
 import {
   renderHook,
   RenderResult,
-  act
+  act,
 } from "@testing-library/react-hooks/dom"
 import { consult } from "nexusmed-js"
 import { AnswersProvider, IAnswersContext, useAnswers } from "./Answers"
+
+
+beforeEach(() => {
+  // to fully reset the state between tests, clear the storage
+  localStorage.clear();
+  // and reset all mocks
+  jest.clearAllMocks();
+
+  // clearAllMocks will impact your other mocks too, so you can optionally reset individual mocks instead:
+  // localStorage.setItem.mockClear();
+})
+
 
 describe('setPrefilled', () => {
 
