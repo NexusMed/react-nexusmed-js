@@ -17,8 +17,8 @@ const initialState: IAnswersContext = {
 
 const AnswersContext = React.createContext<IAnswersContext>(initialState)
 
-type Answers = {
-  [key: string]: Map<number, consult.AnswerInput>
+export type Answers = {
+  [key: string]: { [index: number]: consult.AnswerInput }
 }
 
 export const AnswersProvider: React.FC = ({ children }) => {
@@ -30,15 +30,15 @@ export const AnswersProvider: React.FC = ({ children }) => {
   const setAnswer = (id: string, index: number, answer: AnswerInput) => {
     let ans = answers
     if (!ans[id]) {
-      ans[id] = new Map<number, consult.AnswerInput>()
+      ans[id] = {}
     }
-    ans[id].set(index, answer)
+    ans[id][index] = answer
     _setAnswers(ans)
   }
 
   const setAnswers = (id: string, prefilled: consult.AnswerInput[]) => {
-    let ans: Map<number, consult.AnswerInput> = new Map<number, consult.AnswerInput>()
-    prefilled.forEach((answer, index) => ans.set(index, answer))
+    let ans: Answers = {}
+    prefilled.forEach((answer, index) => ans[index] = answer)
     let newAns = answers
     newAns[id] = ans
     _setAnswers(newAns)

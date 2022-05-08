@@ -4,7 +4,7 @@ import {
   act,
 } from "@testing-library/react-hooks/dom"
 import { consult } from "nexusmed-js"
-import { AnswersProvider, IAnswersContext, useAnswers } from "./Answers"
+import { AnswersProvider, IAnswersContext, useAnswers, Answers } from "./Answers"
 
 
 beforeEach(() => {
@@ -27,9 +27,9 @@ describe('setPrefilled', () => {
     ]
     const wrapper: React.FC = ({ children }) => <AnswersProvider>{children}</AnswersProvider>
     const { result } = renderHook(() => useAnswers('a', prefilled), { wrapper })
-    const expected = new Map<number, consult.AnswerInput>()
-    expected.set(0, prefilled[0])
-    expected.set(1, prefilled[1])
+    const expected: Answers = {}
+    expected[0] = prefilled[0]
+    expected[1] = prefilled[1]
     expect(result.current.answers['a']).toStrictEqual(expected)
   })
 
@@ -50,23 +50,21 @@ describe('updateAnswer', () => {
         text: 'test'
       })
     })
-    const expected = new Map<number, consult.AnswerInput>()
-    expected.set(0, { text: 'test' })
-    expect(ctx.current.answers['b']).toStrictEqual(expected)
+    const expected: Answers = { 'b': { 0: { text: 'test' } } }
+    expect(ctx.current.answers['b']).toStrictEqual(expected['b'])
   })
 
   test('should update existing answer', () => {
     act(() => {
       ctx.current.setAnswer('c', 0, { choice: [1] })
     })
-    const expected = new Map<number, consult.AnswerInput>()
-    expected.set(0, { choice: [1] })
-    expect(ctx.current.answers['c']).toStrictEqual(expected)
+    const expected: Answers = { 'c': { 0: { choice: [1] } } }
+    expect(ctx.current.answers['c']).toStrictEqual(expected['c'])
     act(() => {
       ctx.current.setAnswer('c', 0, { text: 'test' })
     })
-    expected.set(0, { text: 'test' })
-    expect(ctx.current.answers['c']).toStrictEqual(expected)
+    expected['c'] = { 0: { text: 'test' } }
+    expect(ctx.current.answers['c']).toStrictEqual(expected['c'])
   })
 
   // test('should have safe defaults', () => {
