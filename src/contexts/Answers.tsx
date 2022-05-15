@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { consult } from 'nexusmed-js'
 import { AnswerInput } from 'nexusmed-js/dist/dts/consult/sdk'
-import useLocalStorageState from 'use-local-storage-state';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 export interface IAnswersContext {
   answers: Answers;
@@ -23,7 +23,7 @@ export type Answers = {
 
 export const AnswersProvider: React.FC = ({ children }) => {
 
-  const [answers, _setAnswers] = useLocalStorageState<Answers>('answers', {
+  const [answers, _setAnswers] = useLocalStorage<Answers>('answers', {
     defaultValue: initialState.answers
   })
 

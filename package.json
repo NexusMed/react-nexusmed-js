@@ -60,8 +60,5 @@
   },
   "files": [
     "dist"
-  ],
-  "dependencies": {
-    "use-local-storage-state": "^17.0.1"
-  }
+  ]
 }
